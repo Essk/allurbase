@@ -13,11 +13,15 @@ const apiClient = axios.create({
 const createStore = () => {
   return new Vuex.Store({
     state: () => ({
-      releases: []
+      releases: [],
+      pages: []
     }),
     mutations: {
       SET_RELEASES(state, releases) {
         state.releases = releases
+      },
+      SET_PAGES(state, pages) {
+        state.pages = pages
       }
     },
     actions: {
@@ -33,6 +37,11 @@ const createStore = () => {
       getReleaseById: state => id => {
         return state.releases.find(r => {
           return r.id === id
+        })
+      },
+      getPageById: state => id => {
+        return state.pages.find(p => {
+          return p.id === id
         })
       }
     }

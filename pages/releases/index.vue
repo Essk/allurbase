@@ -13,6 +13,16 @@
 <script>
 import axios from 'axios'
 export default {
+  async fetch({ store, params }) {
+    let releaseRes = await axios.get(
+      'http://allurbase.local/wp-json/wp/v2/release/'
+    )
+    let pageRes = await axios.get('http://allurbase.local/wp-json/wp/v2/pages/')
+    store.commit('SET_RELEASES', releaseRes.data)
+    store.commit('SET_PAGES', pageRes.data)
+  }
+
+  /*
   fetch({ store, params }) {
     return axios
       .get('http://allurbase.local/wp-json/wp/v2/release/')
@@ -20,6 +30,7 @@ export default {
         store.commit('SET_RELEASES', res.data)
       })
   }
+  */
 }
 </script>
 
