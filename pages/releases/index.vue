@@ -1,31 +1,23 @@
 <template>
   <div>
     <h1>Releases</h1>
-    <div>
-      <article v-for="release in releases" :key="release.id">
-        <nuxt-link :to="'/releases/'+release.id">
-          <h2>{{ release.title.rendered }}</h2>
-        </nuxt-link>
-        <p>released on {{ release.release_date }}</p>by
-        <ul>
-          <li v-for="author in release.authors" :key="author.id">{{ author.author.post_title }}</li>
-        </ul>
-      </article>
-    </div>
+    <article v-for="release in $store.state.releases" :key="release.id">
+      <nuxt-link :to="{name: 'releases-id', params: { id:release.id} }">{{ release.title.rendered }}</nuxt-link>
+    </article>
   </div>
 </template>
+    
+
+  
 
 <script>
-import releaseService from '@/services/releaseService.js'
+import axios from 'axios'
 export default {
-  asyncData({ params }) {
-    return releaseService
-      .getReleases()
-      .then(response => {
-        return { releases: response.data }
-      })
-      .catch(error => {
-        console.log('There was an error:', error.response)
+  fetch({ store, params }) {
+    return axios
+      .get('http://allurbase.local/wp-json/wp/v2/release/')
+      .then(res => {
+        store.commit('SET_RELEASES', res.data)
       })
   }
 }

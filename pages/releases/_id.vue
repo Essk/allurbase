@@ -1,25 +1,22 @@
 <template>
   <div>
-    <h1>{{ release.title.rendered }}</h1>
+    <h1>hi</h1>
+    <pre>{{ $store.getters.getReleaseById($route.params.id) }}</pre>
   </div>
 </template>
 
 <script>
-import releaseService from '@/services/releaseService.js'
+import axios from 'axios'
 export default {
-  validate({ params }) {
-    return !isNaN(+params.id)
+  fetch({ store, params }) {
+    console.log(params)
+    return axios
+      .get('http://allurbase.local/wp-json/wp/v2/release/')
+      .then(res => {
+        store.commit('SET_RELEASES', res.data)
+      })
   },
-  asyncData({ params }) {
-    return releaseService
-      .getRelease(params.id)
-      .then(response => {
-        return { release: response.data }
-      })
-      .catch(error => {
-        console.log('There was an error:', error.response)
-      })
-  }
+  created() {}
 }
 </script>
 
