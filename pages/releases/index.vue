@@ -1,9 +1,21 @@
 <template>
   <div>
     <h1>Releases</h1>
-    <article v-for="release in $store.state.releases" :key="release.id">
-      <nuxt-link :to="{name: 'releases-id', params: { id:release.id} }">{{ release.title.rendered }}</nuxt-link>
-    </article>
+    <ArchiveCard
+      v-for="release in $store.state.releases"
+      :key="release.id"
+      :title="release.title.rendered"
+      :content="release.content.rendered"
+    >
+      <div slot="card-meta">
+        <span>By:</span>
+        <ul>
+          <li v-for="author in release.authors" :key="author.id">{{ author.author.post_title }}</li>
+        </ul>
+        <span>{{ releaseDue(release.release_date) ? 'Released on' : 'Release due' }}:</span>
+        <span>{{ releaseDue(release.release_date) ? releaseDate(release.release_date) : dueDate(release.release_date, release.due_date_specificity) }}</span>
+      </div>
+    </ArchiveCard>
   </div>
 </template>
     
@@ -11,7 +23,36 @@
   
 
 <script>
-export default {}
+import parse from 'date-fns/parse'
+import compareDesc from 'date-fns/compare_desc'
+import format from 'date-fns/format'
+import ArchiveCard from '@/components/ArchiveCard.vue'
+
+export default {
+  name: 'ReleseArchive',
+  components: {
+    ArchiveCard
+  },
+  methods: {
+    releaseDue: date_str => {
+      return compareDesc(new Date(), parse(date_str)) < 0
+    },
+    releaseDate: date_str => {
+      return format(parse(date_str), 'MM/DD/YYYY')
+    },
+    dueDate: (date_str, due_format) => {
+      //return due_format
+      switch (due_format) {
+        case 'quarter':
+          return format(parse(date_str), '[Q]Q YYYY')
+          break
+        case 'month':
+        default:
+          return format(parse(date_str), 'MMM YYYY')
+      }
+    }
+  }
+}
 </script>
 
 <style scoped>
