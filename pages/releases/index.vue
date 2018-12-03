@@ -10,7 +10,9 @@
       <div slot="card-meta">
         <span>By:</span>
         <ul>
-          <li v-for="author in release.authors" :key="author.id">{{ author.author.post_title }}</li>
+          <li v-for="author in release.authors" :key="author.id">
+            <nuxt-link :to="'/authors/'+author.author.ID">{{ author.author.post_title }}</nuxt-link>
+          </li>
         </ul>
         <span>{{ releaseDue(release.release_date) ? 'Released on' : 'Release due' }}:</span>
         <span>{{ releaseDue(release.release_date) ? releaseDate(release.release_date) : dueDate(release.release_date, release.due_date_specificity) }}</span>
