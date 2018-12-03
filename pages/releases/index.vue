@@ -38,11 +38,17 @@ export default {
       return compareDesc(new Date(), parse(date_str)) < 0
     },
     releaseDate: date_str => {
-      return format(parse(date_str), 'MM/DD/YYYY')
+      return format(parse(date_str), 'MMM D YYYY')
     },
     dueDate: (date_str, due_format) => {
       //return due_format
       switch (due_format) {
+        case 'date':
+          return format(parse(date_str), 'MMM D YYYY')
+          break
+        case 'year':
+          return format(parse(date_str), 'YYYY')
+          break
         case 'quarter':
           return format(parse(date_str), '[Q]Q YYYY')
           break
