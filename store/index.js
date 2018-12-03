@@ -14,7 +14,9 @@ const createStore = () => {
   return new Vuex.Store({
     state: () => ({
       releases: [],
-      pages: []
+      pages: [],
+      frontPage: {},
+      ip: ''
     }),
     mutations: {
       SET_RELEASES(state, releases) {
@@ -22,12 +24,37 @@ const createStore = () => {
       },
       SET_PAGES(state, pages) {
         state.pages = pages
+      },
+      SET_FP(state, page) {
+        state.frontPage = page
+      },
+      SET_IP(state, ip) {
+        state.ip = ip
       }
     },
     actions: {
       async fetchReleases({ commit }) {
         const { data } = await apiClient.get('/release/')
         commit('SET_RELEASES', data)
+      },
+      async nuxtServerInit({ commit }, { app }) {
+        // just in as a canary while I figure out how all this fits together
+        const ip = await app.$axios.$get('http://icanhazip.com')
+        commit('SET_IP', ip)
+
+        // the data I care about
+        const releaseRes = await app.$axios.$get(
+          'http://allurbase.local/wp-json/wp/v2/release/'
+        )
+        const pageRes = await app.$axios.$get(
+          'http://allurbase.local/wp-json/wp/v2/pages/'
+        )
+        const fpRes = await app.$axios.$get(
+          'http://allurbase.local/wp-json/aub-config/front-page/'
+        )
+        commit('SET_RELEASES', releaseRes)
+        commit('SET_PAGES', pageRes)
+        commit('SET_FP', fpRes)
       }
     },
     getters: {
@@ -43,6 +70,9 @@ const createStore = () => {
         return state.pages.find(p => {
           return p.id === id
         })
+      },
+      getFrontPage: state => {
+        return state.frontPage
       }
     }
   })
