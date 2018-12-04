@@ -19,6 +19,9 @@ const createStore = () => {
       SET_AUTHORS(state, authors) {
         state.authors = authors
       },
+      SET_SERIES(state, series) {
+        state.series = series
+      },
       SET_FP(state, page) {
         state.frontPage = page
       },
@@ -45,6 +48,10 @@ const createStore = () => {
         const authors = await app.$axios.$get(
           'http://allurbase.local/wp-json/wp/v2/author/'
         )
+        const series = await app.$axios.$get(
+          'http://allurbase.local/wp-json/wp/v2/series/'
+        )
+        commit('SET_SERIES', series)
         commit('SET_AUTHORS', authors)
         commit('SET_RELEASES', releaseRes)
         commit('SET_PAGES', pageRes)
@@ -57,7 +64,7 @@ const createStore = () => {
       },
       getReleaseById: state => id => {
         return state.releases.find(r => {
-          return r.id === id
+          return parseInt(r.id) === parseInt(id)
         })
       },
       getPageById: state => id => {
@@ -71,10 +78,27 @@ const createStore = () => {
       getReleasesByAuthor: state => authorId => {
         return state.releases.filter(r => {
           return r.authors
-            .map(author => {
-              return author.author.ID
+            .map(authorObj => {
+              return authorObj.author
             })
             .includes(authorId)
+        })
+      },
+      getReleasesBySeries: state => seriesId => {
+        return state.releases.filter(r => {
+          if (r.hasOwnProperty('series')) {
+            return r.series
+              .map(seriesObj => {
+                return seriesObj.series
+              })
+              .includes(seriesId)
+          }
+          return false
+        })
+      },
+      getAuthorById: state => id => {
+        return state.authors.find(a => {
+          return parseInt(a.id) === parseInt(id)
         })
       }
     }

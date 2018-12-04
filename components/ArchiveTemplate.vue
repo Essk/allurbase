@@ -2,7 +2,7 @@
   <div>
     <h1>{{ title }}</h1>
 
-    <article v-for="item in items" :key="item">
+    <article v-for="item in items" :key="item.id">
       <slot :item="item"/>
     </article>
   </div>

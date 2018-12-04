@@ -1,16 +1,17 @@
 <template>
-  <ArchiveTemplate :items="$store.state.authors" title="Authors">
+  <ArchiveTemplate :items="$store.state.series" title="Series">
     <ArchiveCard
       slot-scope="{ item }"
       :title="item.title.rendered"
       :content="item.content.rendered"
       :id="item.id"
-      detail-slug="/authors"
+      detail-slug="/series"
     >
       <div slot="card-meta">
-        <span>Worked on:</span>
+        <span>Releases in this series:</span>
+
         <ul>
-          <li v-for="release in $store.getters.getReleasesByAuthor(item.id) " :key="release.id">
+          <li v-for="release in $store.getters.getReleasesBySeries(item.id) " :key="release.id">
             <nuxt-link :to="'/releases/'+release.id">{{ release.title.rendered }}</nuxt-link>
           </li>
         </ul>

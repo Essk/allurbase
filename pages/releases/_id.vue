@@ -1,13 +1,16 @@
 <template>
   <div>
-    <h1>hi</h1>
-    <pre>{{ $store.getters.getReleaseById($route.params.id) }}</pre>
+    <Detail :item="$store.getters.getReleaseById($route.params.id)"/>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
-export default {}
+import Detail from '@/components/Detail.vue'
+export default {
+  components: {
+    Detail
+  }
+}
 </script>
 
 <style scoped>

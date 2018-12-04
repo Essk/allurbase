@@ -4,12 +4,16 @@
       slot-scope="{ item }"
       :title="item.title.rendered"
       :content="item.content.rendered"
+      :id="item.id"
+      detail-slug="/releases"
     >
       <div slot="card-meta">
         <span>By:</span>
         <ul>
-          <li v-for="author in item.authors" :key="author.id">
-            <nuxt-link :to="'/authors/'+author.author.ID">{{ author.author.post_title }}</nuxt-link>
+          <li v-for="author in item.authors" :key="author.author">
+            <nuxt-link
+              :to="'/authors/'+author.author"
+            >{{ $store.getters.getAuthorById(author.author).title.rendered }}</nuxt-link>
           </li>
         </ul>
         <span>{{ releaseDue(item.release_date) ? 'Released on' : 'Release due' }}:</span>
