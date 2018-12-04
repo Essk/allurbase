@@ -1,33 +1,31 @@
 <template>
-  <div>
-    <h1>Authors</h1>
+  <ArchiveTemplate :items="$store.state.authors" title="Authors">
     <ArchiveCard
-      v-for="author in $store.state.authors"
-      :key="author.id"
-      :title="author.title.rendered"
-      :content="author.content.rendered"
+      slot-scope="{ item }"
+      :title="item.title.rendered"
+      :content="item.content.rendered"
     >
       <div slot="card-meta">
+        <span>Worked on:</span>
         <ul>
-          <li v-for="release in $store.getters.getReleasesByAuthor(author.id) " :key="release.id">
+          <li v-for="release in $store.getters.getReleasesByAuthor(item.id) " :key="release.id">
             <nuxt-link :to="'/releases/'+release.id">{{ release.title.rendered }}</nuxt-link>
           </li>
         </ul>
       </div>
     </ArchiveCard>
-  </div>
+  </ArchiveTemplate>
 </template>
-    
-
-  
 
 <script>
 import ArchiveCard from '@/components/ArchiveCard.vue'
+import ArchiveTemplate from '@/components/ArchiveTemplate.vue'
 
 export default {
   name: 'AuthorArchive',
   components: {
-    ArchiveCard
+    ArchiveCard,
+    ArchiveTemplate
   }
 }
 </script>

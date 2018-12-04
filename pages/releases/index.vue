@@ -1,24 +1,22 @@
 <template>
-  <div>
-    <h1>Releases</h1>
+  <ArchiveTemplate :items="$store.state.releases" title="Releases">
     <ArchiveCard
-      v-for="release in $store.state.releases"
-      :key="release.id"
-      :title="release.title.rendered"
-      :content="release.content.rendered"
+      slot-scope="{ item }"
+      :title="item.title.rendered"
+      :content="item.content.rendered"
     >
       <div slot="card-meta">
         <span>By:</span>
         <ul>
-          <li v-for="author in release.authors" :key="author.id">
+          <li v-for="author in item.authors" :key="author.id">
             <nuxt-link :to="'/authors/'+author.author.ID">{{ author.author.post_title }}</nuxt-link>
           </li>
         </ul>
-        <span>{{ releaseDue(release.release_date) ? 'Released on' : 'Release due' }}:</span>
-        <span>{{ releaseDue(release.release_date) ? releaseDate(release.release_date) : dueDate(release.release_date, release.due_date_specificity) }}</span>
+        <span>{{ releaseDue(item.release_date) ? 'Released on' : 'Release due' }}:</span>
+        <span>{{ releaseDue(item.release_date) ? releaseDate(item.release_date) : dueDate(item.release_date, item.due_date_specificity) }}</span>
       </div>
     </ArchiveCard>
-  </div>
+  </ArchiveTemplate>
 </template>
     
 
@@ -29,11 +27,13 @@ import parse from 'date-fns/parse'
 import compareDesc from 'date-fns/compare_desc'
 import format from 'date-fns/format'
 import ArchiveCard from '@/components/ArchiveCard.vue'
+import ArchiveTemplate from '@/components/ArchiveTemplate.vue'
 
 export default {
   name: 'ReleseArchive',
   components: {
-    ArchiveCard
+    ArchiveCard,
+    ArchiveTemplate
   },
   methods: {
     releaseDue: date_str => {
