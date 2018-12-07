@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <main class="archive container">
     <h1>{{ title }}</h1>
 
     <article v-for="item in items" :key="item.id">
       <slot :item="item"/>
     </article>
-  </div>
+  </main>
 </template>
 
 <script>

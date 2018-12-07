@@ -7,7 +7,7 @@
       :id="item.id"
       detail-slug="/releases"
     >
-      <div slot="card-meta">
+      <template slot="card-meta">
         <span>By:</span>
         <ul>
           <li v-for="author in item.authors" :key="author.author">
@@ -16,9 +16,9 @@
             >{{ $store.getters.getAuthorById(author.author).title.rendered }}</nuxt-link>
           </li>
         </ul>
-        <span>{{ releaseDue(item.release_date) ? 'Released on' : 'Release due' }}:</span>
+        <span class="bg--red">{{ releaseDue(item.release_date) ? 'Released on' : 'Release due' }}:</span>
         <span>{{ releaseDue(item.release_date) ? releaseDate(item.release_date) : dueDate(item.release_date, item.due_date_specificity) }}</span>
-      </div>
+      </template>
     </ArchiveCard>
   </ArchiveTemplate>
 </template>
