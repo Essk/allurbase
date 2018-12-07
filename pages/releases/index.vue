@@ -1,5 +1,5 @@
 <template>
-  <ArchiveTemplate :items="$store.state.releases" title="Releases">
+  <ArchiveTemplate :items="releases" title="Releases">
     <ArchiveCard
       slot-scope="{ item }"
       :title="item.title.rendered"
@@ -32,6 +32,7 @@ import compareDesc from 'date-fns/compare_desc'
 import format from 'date-fns/format'
 import ArchiveCard from '@/components/ArchiveCard.vue'
 import ArchiveTemplate from '@/components/ArchiveTemplate.vue'
+import { mapState } from 'vuex'
 
 export default {
   name: 'ReleseArchive',
@@ -39,6 +40,23 @@ export default {
     ArchiveCard,
     ArchiveTemplate
   },
+
+  async fetch({ store }) {
+    //console.log(this.frontPage)
+    await store.dispatch('getReleases')
+    await store.dispatch('getAuthors')
+  },
+  computed: {
+    ...mapState({
+      releases: state => {
+        return state.releases
+      },
+      authors: state => {
+        return state.authors
+      }
+    })
+  },
+
   methods: {
     releaseDue: date_str => {
       return compareDesc(new Date(), parse(date_str)) < 0
