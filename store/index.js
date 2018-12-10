@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 const apiBase =
   process.env.NODE_ENV === 'development'
     ? 'http://allurbase.local/wp-json'
-    : 'http://dev.essk.co.uk/wp-json'
+    : 'https://dev.essk.co.uk/wp-json'
 console.log(apiBase)
 const isEmpty = obj => {
   return Object.keys(obj).length === 0 && obj.constructor === Object
