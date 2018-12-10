@@ -1,5 +1,10 @@
 import Vuex from 'vuex'
 
+const apiBase =
+  process.env.NODE_ENV === 'development'
+    ? 'http://allurbase.local/wp-json'
+    : 'http://dev.essk.co.uk/wp-json'
+console.log(apiBase)
 const isEmpty = obj => {
   return Object.keys(obj).length === 0 && obj.constructor === Object
 }
@@ -34,37 +39,11 @@ const createStore = () => {
       }
     },
     actions: {
-      async nuxtServerInit({ commit }, { app }) {
-        /*         // just in as a canary while I figure out how all this fits together
-        const ip = await app.$axios.$get('http://icanhazip.com')
-        commit('SET_IP', ip)
-
-        // the data I care about
-        const releaseRes = await app.$axios.$get(
-          'http://allurbase.local/wp-json/wp/v2/release/'
-        )
-        const pageRes = await app.$axios.$get(
-          'http://allurbase.local/wp-json/wp/v2/pages/'
-        )
-        const fpRes = await app.$axios.$get(
-          'http://allurbase.local/wp-json/aub-config/front-page/'
-        )
-        const authors = await app.$axios.$get(
-          'http://allurbase.local/wp-json/wp/v2/author/'
-        )
-        const series = await app.$axios.$get(
-          'http://allurbase.local/wp-json/wp/v2/series/'
-        )
-        commit('SET_SERIES', series)
-        commit('SET_AUTHORS', authors)
-        commit('SET_RELEASES', releaseRes)
-        commit('SET_PAGES', pageRes)
-        commit('SET_FP', fpRes) */
-      },
+      async nuxtServerInit({ commit }, { app }) {},
       async getFp({ commit, state }) {
         if (isEmpty(state.frontPage)) {
           await this.$axios
-            .get('http://allurbase.local/wp-json/aub-config/front-page/')
+            .get(apiBase + '/aub-config/front-page/')
             .then(res => {
               if (res.status === 200) {
                 commit('SET_FP', res.data)
@@ -74,36 +53,30 @@ const createStore = () => {
       },
       async getPages({ commit, state }) {
         if (isEmpty(state.pages)) {
-          await this.$axios
-            .get('http://allurbase.local/wp-json/wp/v2/pages/')
-            .then(res => {
-              if (res.status === 200) {
-                commit('SET_PAGES', res.data)
-              }
-            })
+          await this.$axios.get(apiBase + '/wp/v2/pages/').then(res => {
+            if (res.status === 200) {
+              commit('SET_PAGES', res.data)
+            }
+          })
         }
       },
       async getReleases({ commit, state }) {
         //console.log()
         if (state.releases.length === 0) {
-          await this.$axios
-            .get('http://allurbase.local/wp-json/wp/v2/release/')
-            .then(res => {
-              if (res.status === 200) {
-                commit('SET_RELEASES', res.data)
-              }
-            })
+          await this.$axios.get(apiBase + '/wp/v2/release/').then(res => {
+            if (res.status === 200) {
+              commit('SET_RELEASES', res.data)
+            }
+          })
         }
       },
       async getAuthors({ commit, state }) {
         if (state.authors.length === 0) {
-          await this.$axios
-            .get('http://allurbase.local/wp-json/wp/v2/author/')
-            .then(res => {
-              if (res.status === 200) {
-                commit('SET_AUTHORS', res.data)
-              }
-            })
+          await this.$axios.get(apiBase + '/wp/v2/author/').then(res => {
+            if (res.status === 200) {
+              commit('SET_AUTHORS', res.data)
+            }
+          })
         }
       }
     },
