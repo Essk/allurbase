@@ -1,5 +1,10 @@
 <template>
-  <ArchiveTemplate :items="releases" title="Releases">
+  <ArchiveTemplate
+    :items="releases"
+    :copy="'Nunc vel tellus diam. Donec vel rhoncus libero. Phasellus molestie pharetra leo eget tristique. Etiam et ultrices tellus. Praesent vulputate ultrices eros in accumsan. Suspendisse congue semper eros id tempor. Sed libero risus, egestas eu enim vitae, ullamcorper bibendum justo. Phasellus imperdiet est sit amet quam condimentum, ac tempor mi pretium. Quisque faucibus egestas lorem nec facilisis. Interdum et malesuada fames ac ante ipsum primis in faucibus.' "
+    :with-sidebar="true"
+    title="Releases"
+  >
     <ArchiveCard
       slot-scope="{ item }"
       :title="item.title.rendered"

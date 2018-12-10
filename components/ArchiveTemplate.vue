@@ -1,6 +1,6 @@
 <template>
   <main class="archive container">
-    <h1>{{ title }}</h1>
+    <PageIntro :title="title" :copy="copy" :with-sidebar="withSidebar"/>
 
     <article v-for="item in items" :key="item.id">
       <slot :item="item"/>
@@ -9,12 +9,24 @@
 </template>
 
 <script>
+import PageIntro from '@/components/PageIntro.vue'
 export default {
   name: 'ArchiveTemplate',
+  components: {
+    PageIntro
+  },
   props: {
     title: {
       type: String,
       default: ''
+    },
+    copy: {
+      type: String,
+      default: ''
+    },
+    withSidebar: {
+      type: Boolean,
+      default: false
     },
     items: {
       type: Array,
