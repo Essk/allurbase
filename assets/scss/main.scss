@@ -1,3 +1,8 @@
+@import url('https://fonts.googleapis.com/css?family=Orbitron:900');
+
+$header-font: 'Orbitron', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+  'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+  'Segoe UI Symbol', 'Noto Color Emoji';
 body {
 }
 
@@ -5,8 +10,34 @@ main {
   padding-top: 60px;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  font-family: $header-font;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+a {
+  text-decoration: underline;
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
+  p &,
+  ul & {
+    color: #3b53a5;
+  }
+}
 .aub-card {
-  padding: 1em;
   border: 1px solid lightgray;
   border-radius: 10px;
   &:not(first-of-type) {

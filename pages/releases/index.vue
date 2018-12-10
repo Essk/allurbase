@@ -7,6 +7,12 @@
       :id="item.id"
       detail-slug="/releases"
     >
+      <template slot="card-subheader">
+        <span class="h5">{{ releaseDue(item.release_date) ? 'Released' : 'Due' }}:</span>
+        <span
+          class="h3"
+        >{{ releaseDue(item.release_date) ? releaseDate(item.release_date) : dueDate(item.release_date, item.due_date_specificity) }}</span>
+      </template>
       <template slot="card-meta">
         <span>By:</span>
         <ul>
@@ -16,8 +22,6 @@
             >{{ $store.getters.getAuthorById(author.author).title.rendered }}</nuxt-link>
           </li>
         </ul>
-        <span class="bg--red">{{ releaseDue(item.release_date) ? 'Released on' : 'Release due' }}:</span>
-        <span>{{ releaseDue(item.release_date) ? releaseDate(item.release_date) : dueDate(item.release_date, item.due_date_specificity) }}</span>
       </template>
     </ArchiveCard>
   </ArchiveTemplate>
